@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Đăng kiểm Việt Nam",
+        "description": "Nhập biển đăng ký, số khung và mã loại phương tiện để tra cứu giấy chứng nhận. Mặc định loại phương tiện là 1.",
+        "data": {
+          "biendangky": "Biển đăng ký (ví dụ: 51L66251T)",
+          "sokhung": "Số khung (theo dữ liệu tra cứu, ví dụ 6 ký tự cuối)",
+          "loaipt": "Mã loại phương tiện (mặc định 1)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Không kết nối được hoặc website không trả về dữ liệu XML hợp lệ. Hãy kiểm tra thông tin tra cứu và kết nối mạng.",
+      "invalid_input": "Biển đăng ký và số khung là bắt buộc."
+    },
+    "abort": {
+      "already_configured": "Biển đăng ký này đã được cấu hình."
+    }
+  }
+}

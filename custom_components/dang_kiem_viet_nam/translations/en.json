@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Vietnam Vehicle Inspection",
+        "description": "Enter the registration plate, chassis number, and vehicle type code. Vehicle type defaults to 1.",
+        "data": {
+          "biendangky": "Registration plate (for example: 51L66251T)",
+          "sokhung": "Chassis number (for example, the last six characters)",
+          "loaipt": "Vehicle type code (default 1)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect or the website did not return valid XML. Check the lookup information and network connection.",
+      "invalid_input": "Registration plate and chassis number are required."
+    },
+    "abort": {
+      "already_configured": "This registration plate is already configured."
+    }
+  }
+}
