@@ -1,0 +1,12 @@
+{
+  "domain": "dang_kiem_viet_nam",
+  "name": "Đăng kiểm Việt Nam",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://gcndangkiem.vr.org.vn/",
+  "iot_class": "cloud_polling",
+  "version": "0.1.5",
+  "requirements": [
+    "certifi"
+  ]
+}
