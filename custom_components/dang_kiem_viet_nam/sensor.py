@@ -89,7 +89,7 @@ SENSORS: tuple[DangKiemSensorDescription, ...] = (
         name="Năm sản xuất",
         field="NamSX",
         value_kind="integer",
-        icon="mdi:calendar-car",
+        icon="mdi:calendar-month",
     ),
     DangKiemSensorDescription(
         key="inspection_report_number",
@@ -134,6 +134,21 @@ SENSORS: tuple[DangKiemSensorDescription, ...] = (
         value_kind="integer",
         native_unit_of_measurement="rpm",
         icon="mdi:rotate-right",
+    ),
+    DangKiemSensorDescription(
+        key="last_update_time",
+        name="Thời gian cập nhật gần nhất",
+        field="",
+        value_kind="update_timestamp",
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-check-outline",
+    ),
+    DangKiemSensorDescription(
+        key="update_result",
+        name="Kết quả cập nhật",
+        field="",
+        value_kind="update_result",
+        icon="mdi:cloud-check-outline",
     ),
 )
 
@@ -219,11 +234,41 @@ class DangKiemSensor(CoordinatorEntity[DangKiemCoordinator], SensorEntity):
             )
 
     @property
-    def native_value(self) -> date | str | int | None:
-        """Return the current sensor value from coordinator memory."""
-        value = self.coordinator.data.get(self.entity_description.field)
+    def available(self) -> bool:
+        """Keep diagnostic sensors available when a refresh fails."""
+        if self.entity_description.value_kind in {
+            "update_timestamp",
+            "update_result",
+        }:
+            return True
+        return super().available
+
+    @property
+    def icon(self) -> str | None:
+        """Show a status-appropriate icon for the update result sensor."""
+        if self.entity_description.key == "update_result":
+            if self.coordinator.last_update_result is True:
+                return "mdi:check-circle"
+            if self.coordinator.last_update_result is False:
+                return "mdi:alert-circle"
+            return "mdi:help-circle-outline"
+        return self.entity_description.icon
+
+    @property
+    def native_value(self) -> date | datetime | str | int | None:
+        """Return either vehicle data or update diagnostics."""
         kind = self.entity_description.value_kind
 
+        if kind == "update_timestamp":
+            return self.coordinator.last_update_attempt
+        if kind == "update_result":
+            if self.coordinator.last_update_result is True:
+                return "Thành công"
+            if self.coordinator.last_update_result is False:
+                return "Thất bại"
+            return None
+
+        value = self.coordinator.data.get(self.entity_description.field)
         if kind == "date":
             return _parse_date(value)
         if kind == "integer":
